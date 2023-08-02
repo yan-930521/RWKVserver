@@ -1,0 +1,9 @@
+/gitLib
+/.vscode
+/.VSCodeCounter
+/model/*
+/*.zip
+/**/data/*
+/RWKVserver-cuBLAS-VER/cublas64_11.dll
+/RWKVserver-cuBLAS-VER/cublasLt64_11.dll
+/RWKVserver-cuBLAS-VER/cudart64_110.dll
