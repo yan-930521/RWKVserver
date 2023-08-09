@@ -323,11 +323,15 @@ def getCompletion(userInput: str, initPrompt: str, chat, history, history_mode, 
     print()
     return resultChat
 
-def getCompletionByTokens(id, name, tokens, user, assistant, max_length, top_p, temperature, data):
+def getCompletionByTokens(id, name, tokens, user, assistant, max_length, top_p, temperature, pp=None, fp=None):
     if (user is None):
         user = USER
     if (assistant is None):
         assistant = ASSISTANT
+    if (pp is None):
+        pp = PRESENCE_PENALTY
+    if (fp is None):
+        fp = FREQUENCY_PENALTY
     
     if(id not in caches):
         c = Cache()
@@ -361,7 +365,7 @@ def getCompletionByTokens(id, name, tokens, user, assistant, max_length, top_p, 
         logits, state = cache.get()
 
         for n in token_counts:
-            logits[n] -= PRESENCE_PENALTY + token_counts[n] * FREQUENCY_PENALTY
+            logits[n] -= pp + token_counts[n] * fp
 
         token: int = sample_logits(logits, temperature, top_p)
 
@@ -569,8 +573,9 @@ def completionByTokens():
             assistant=data["assistant"],
             max_length=data["max_length"],
             temperature=data["temperature"],
-            top_p=data["top_p"],
-            data=data["data"]
+            pp=data.get("pp"),
+            fp=data.get("fp"),
+            top_p=data["top_p"]
         )
 
         # print(tokenizer_decode(tokens))
